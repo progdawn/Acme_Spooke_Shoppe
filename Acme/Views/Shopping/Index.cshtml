@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Acme.Models.Product>
+
+
+@{
+    ViewBag.Title = "Shopping";
+}
+
+
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Shopping</title>
+    </head>
+
+    <body>
+        
+        <h1 style="text-align:center;text-transform:uppercase">@Model.First().CategoryID</h1>
+
+            @foreach (var item in Model)
+            { 
+                <div style="float:left; margin:20px">
+                    <a href="~/Shopping/Order/@item.ProductID" style="display: block;text-align: center">@item.Name</a>
+                    <br />
+                    <img src="~/Content/Images/Products/@item.ImageFile" width="170" height="200" />       
+                </div>
+            }
+    </body>
+</html>

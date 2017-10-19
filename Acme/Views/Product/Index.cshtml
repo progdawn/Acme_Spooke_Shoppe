@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Acme.Models.Product>
+
+@{
+    ViewBag.Title = "Products";
+}
+<link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+<h2>Products</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Action
+        </th>
+        <th>
+            Picture
+        </th>
+        <th>
+            Product Data
+        </th>
+        <th>
+            Price
+        </th>
+        <th>
+            On Hand
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.ProductID })
+            @Html.ActionLink("Delete", "Delete", new { id = item.ProductID })
+        </td>
+        <td>
+            <img src="~/Content/Images/Products/@item.ImageFile" width="85" height="100"/>
+        </td>
+        <td>
+            Product ID:
+            @Html.DisplayFor(modelItem => item.ProductID)
+            <br />
+            Name:
+           @Html.DisplayFor(modelItem => item.Name)
+            <br />
+            Category: 
+            @Html.DisplayFor(modelItem => item.CategoryID)
+            <br />
+            Short Desc:
+           @Html.DisplayFor(modelItem => item.ShortDescription)
+            <br />
+            Long Desc:
+            @Html.DisplayFor(modelItem => item.LongDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UnitPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OnHand)
+        </td>
+    </tr>
+}
+</table>
