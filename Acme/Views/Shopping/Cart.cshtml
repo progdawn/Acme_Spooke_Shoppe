@@ -1,8 +1,41 @@
-﻿
+﻿@model IEnumerable<Acme.Models.ViewModels.Cartvm1>
 @{
     ViewBag.Title = "Cart";
 }
-
-<h2>Here Is Your Cart</h2>
-Under Construction
+<style>
+    .button {
+        background: none !important;
+        border: none;
+        padding: 0 !important;
+        color: #0000FF;
+    }
+</style>
+@foreach (var item in Model)
+{
+    using (Html.BeginForm())
+    {
+        <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
+        <input type="hidden" id="ProductId" name="ProductId"
+               value="@item.ProductID" />
+        @Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID }) <br />
+        @*add other fields here*@
+        <div class="editor-field">
+            <input data-val="true"
+                   data-val-range="Quantity invalid"
+                   data-val-range-max="99" data-val-range-min="1"
+                   data-val-required="Quantity missing" maxlength="2" size="2"
+                   id="Quantity" name="Quantity" type="text" value="@item.Quantity" />
+            <br />
+            <span class="field-validation-valid" data-valmsg-for="Quantity"
+                  data-valmsg-replace="true"></span>
+        </div>
+        <input type="submit" class="button" name="udaction" value="Update" />
+        <input type="submit" class="button" name="udaction" value="Delete"
+               onclick="return confirm('Are you sure?')" /><br />
+    }
+    <br />
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 

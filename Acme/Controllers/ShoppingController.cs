@@ -55,6 +55,25 @@ namespace Acme.Controllers
             return View("error");
         }
 
+        [HttpPost]
+        public ActionResult Order(Cart_Lineitem cart)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    dbcon.Open();
+                    cart.CartNumber = 100;
+                    int intresult = Cart_Lineitem.CartUpSert(dbcon, cart);
+                    dbcon.Close();
+                    return RedirectToAction("Cart");
+                }
+                catch (Exception ex) { throw new Exception(ex.Message); }
+            }
+            ViewBag.errormsg = "Invalid data found in Order Page";
+            return View("error");
+        }
+
         public ActionResult Cart()
         {
             return View();

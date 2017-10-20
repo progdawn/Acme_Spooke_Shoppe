@@ -4,6 +4,26 @@
     ViewBag.Title = "Order";
 }
 
+<style type="text/css">
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .field-validation-error {
+        color: #f00;
+    }
+
+    .validation-summary-errors {
+        color: #f00;
+        font-weight: bold;
+    }
+
+    .input-validation-error {
+        border: 2px solid #f00;
+        background-color: #fee;
+    }
+</style>
+
 <h2>Order</h2>
 
 
@@ -17,21 +37,36 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ProductID)
 
+        <input type="hidden" name="CartNumber" value="1" />
+        <input type="hidden" name="ProductID" value="@Model.ProductID" />
+
         <div class="form-group">
             @Html.DisplayFor(model => model.Name)
         </div>
+        <input type="hidden" name="CartNumber" value="2" />
+        <input type="hidden" name="Name" value="@Model.Name" />
 
         <div class="form-group">
             @Html.DisplayFor(model => model.LongDescription)
         </div>
+        <input type="hidden" name="CartNumber" value="3" />
+        <input type="hidden" name="LongDescription" value="@Model.LongDescription" />
 
         <div class="form-group">
             @Html.DisplayFor(model => model.UnitPrice)
         </div>
+        <input type="hidden" name="CartNumber" value="4" />
+        <input type="hidden" name="UnitPrice" value="@Model.UnitPrice" />
 
-        <div>
+        <div class="editor-field">
             Quantity:
-            <input type="text" name="quantity">
+            <input data-val="true"
+                   data-val-range="Quantity not valid"
+                   data-val-range-max="99" data-val-range-min="1"
+                   data-val-required="Quantity missing" maxlength="2" size="2"
+                   id="Quantity" name="Quantity" type="text" value="1" />
+            <span class="field-validation-valid" data-valmsg-for="Quantity"
+                  data-valmsg-replace="true"></span>
         </div>
 
         <img src="~/Content/Images/Products/@Url.Content(Model.ImageFile)" />
