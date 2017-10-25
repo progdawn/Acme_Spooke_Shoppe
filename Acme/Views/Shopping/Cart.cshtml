@@ -22,15 +22,17 @@
     </tr>
 </table>
 
+@{decimal total = 0; }
+
 @foreach (var item in Model)
 {
     using (Html.BeginForm())
     {
         <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
-        <input type="hidden" id="ProductId" name="ProductId"
-               value="@item.ProductID" />
+        <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
+        <img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" />
         @Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID }) <br />
-        @*add other fields here*@
+        @Html.DisplayFor(modelItem => item.UnitPrice)
         <div class="editor-field">
             <input data-val="true"
                    data-val-range="Quantity invalid"
@@ -46,7 +48,9 @@
                onclick="return confirm('Are you sure?')" /><br />
     }
     <br />
+    total = total + item.UnitPrice;
 }
+@total
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
