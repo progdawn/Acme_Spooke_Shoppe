@@ -117,25 +117,6 @@ namespace Acme.Controllers
             return View("Error");
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(Product prod)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            dbcon.Open();
-        //            int intresult = Product.CUDProduct(dbcon, "update", prod);
-        //            dbcon.Close();
-        //            return RedirectToAction("Index");
-        //        }
-        //        catch (Exception ex) { throw new Exception(ex.Message); }
-        //    }
-        //    ViewBag.errormsg = "Invalid data in Edit Post action method";
-        //    return View("Error");
-        //}
-
         public ActionResult Delete(String id)
         {
             try

@@ -10,6 +10,18 @@
         color: #0000FF;
     }
 </style>
+
+<table style="width: 630px; background-color: white">
+    <tr style="color:#FFFFFF; background-color:#3333FF">
+        <th style="width:85px"></th>
+        <th style="width:280px">Product</th>
+        <th style="width:95px">Unit Price</th>
+        <th style="width:85px; text-align: right">Quantity</th>
+        <th style="width:85px; text-align: right">Total</th>
+        <th style="width:70px;"></th>
+    </tr>
+</table>
+
 @foreach (var item in Model)
 {
     using (Html.BeginForm())

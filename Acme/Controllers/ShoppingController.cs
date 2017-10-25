@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Data.SqlClient;
 using System.Configuration;
 using Acme.Models;
+using Acme.Models.ViewModels;
 
 namespace Acme.Controllers
 {
@@ -76,7 +77,36 @@ namespace Acme.Controllers
 
         public ActionResult Cart()
         {
-            return View();
+            List<Cartvm1> cartvm1List;
+            try
+            {
+                dbcon.Open();
+                cartvm1List = Cartvm1.GetCartList(dbcon, 100);
+                dbcon.Close();
+
+            }
+            catch (Exception ex) { throw new Exception(ex.Message); }
+            return View(cartvm1List);
+        }
+
+        [HttpPost]
+        public ActionResult Cart(Cart_Lineitem cart, string udaction="")
+        {
+            udaction = udaction.ToLower();
+            if(ModelState.IsValid && (udaction == "update" || udaction == "delete"))
+            {
+                try
+                {
+                    dbcon.Open();
+                    cart.CartNumber = 100;
+                    int intresult = Cart_Lineitem.CUDCart_Lineitem(dbcon, udaction, cart);
+                    dbcon.Close();
+                    return RedirectToAction("Cart");
+                }
+                catch(Exception ex) { throw new Exception(ex.Message); }
+            }
+            ViewBag.errormsg = "Invalid data found in Cart Page";
+            return View("error");            
         }
     }
 }

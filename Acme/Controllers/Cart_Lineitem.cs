@@ -31,7 +31,28 @@ namespace Acme.Controllers
             return intCnt;
         }
 
-        public static Int32 CUDCart_Lineitems(SqlConnection dbcon, string CUDAction, Cart_Lineitem cart)
+        public static List<Cart_Lineitem> GetCart_LineitemList(SqlConnection dbcon, string SqlClause)
+        {
+            List<Cart_Lineitem> itemlist = new List<Cart_Lineitem>();
+            
+            string strsql = "select * from Cart_LineItems " + SqlClause;
+            SqlCommand cmd = new SqlCommand(strsql, dbcon);
+            SqlDataReader myReader;
+            myReader = cmd.ExecuteReader();
+            while(myReader.Read())
+            {
+                Cart_Lineitem obj = new Cart_Lineitem();
+                obj.CartNumber = Convert.ToInt32(myReader["CartNumber"].ToString());
+                obj.ProductId = myReader["ProductId"].ToString();
+                obj.Quantity = Convert.ToInt32(myReader["Quantity"].ToString());
+                itemlist.Add(obj);
+            }
+            myReader.Close();
+            cmd.Dispose();
+            return itemlist;
+        }
+
+        public static Int32 CUDCart_Lineitem(SqlConnection dbcon, string CUDAction, Cart_Lineitem cart)
         {
             SqlCommand cmd = new SqlCommand();
             cmd.CommandType = CommandType.StoredProcedure;
