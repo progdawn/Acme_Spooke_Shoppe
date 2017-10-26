@@ -9,48 +9,71 @@
         padding: 0 !important;
         color: #0000FF;
     }
+    table {
+        background-color: white;
+        width: 630px;
+        border: none;
+    }
+    table th {
+        color: white;
+        background-color: #3333FF;
+        border: none;
+    }
+    table td {
+        border: none;
+    }
+    table tr {
+        border: 1px solid black;
+    }
 </style>
 
-<table style="width: 630px; background-color: white">
-    <tr style="color:#FFFFFF; background-color:#3333FF">
-        <th style="width:85px"></th>
-        <th style="width:280px">Product</th>
-        <th style="width:95px">Unit Price</th>
-        <th style="width:85px; text-align: right">Quantity</th>
-        <th style="width:85px; text-align: right">Total</th>
+<table>
+    <tr>
+        <th style="width:85px;"></th>
+        <th style="width:280px; text-align: left;">Product</th>
+        <th style="width:95px; text-align: left;">Unit Price</th>
+        <th style="width:85px; text-align: right;">Quantity</th>
+        <th style="width:85px; text-align: right;">Total</th>
         <th style="width:70px;"></th>
     </tr>
-</table>
 
-@{decimal total = 0; }
+    @{decimal totalAll = 0; }
+    @{decimal totalItem = 0; }
 
-@foreach (var item in Model)
-{
-    using (Html.BeginForm())
+    @foreach (var item in Model)
     {
-        <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
-        <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
-        <img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" />
-        @Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID }) <br />
-        @Html.DisplayFor(modelItem => item.UnitPrice)
-        <div class="editor-field">
-            <input data-val="true"
-                   data-val-range="Quantity invalid"
-                   data-val-range-max="99" data-val-range-min="1"
-                   data-val-required="Quantity missing" maxlength="2" size="2"
-                   id="Quantity" name="Quantity" type="text" value="@item.Quantity" />
-            <br />
-            <span class="field-validation-valid" data-valmsg-for="Quantity"
-                  data-valmsg-replace="true"></span>
-        </div>
-        <input type="submit" class="button" name="udaction" value="Update" />
-        <input type="submit" class="button" name="udaction" value="Delete"
-               onclick="return confirm('Are you sure?')" /><br />
+        using (Html.BeginForm())
+        {
+            <tr>
+                <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
+                <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
+                <td><img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" width="85" height="100" /></td>
+                <td>@Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID })</td>
+                <td style="text-align: center;">@Html.DisplayFor(modelItem => item.UnitPrice)</td>
+                <td>
+                    <div class="editor-field">
+                        <input data-val="true"
+                               data-val-range="Quantity invalid"
+                               data-val-range-max="99" data-val-range-min="1"
+                               data-val-required="Quantity missing" maxlength="2" size="2"
+                               id="Quantity" name="Quantity" type="text" value="@item.Quantity" />
+                        <br />
+                        <span class="field-validation-valid" data-valmsg-for="Quantity"
+                              data-valmsg-replace="true"></span>
+                    </div>
+                    <input type="submit" class="button" name="udaction" value="Update" />
+                </td>
+                @{totalItem = item.UnitPrice * item.Quantity;}
+                <td>@totalItem</td>
+                <td>
+                    <input type="submit" class="button" name="udaction" value="Delete" onclick="return confirm('Are you sure?')" />
+                </td>                
+                @{totalAll = totalAll + item.UnitPrice * item.Quantity;}
+            </tr>
+        }
     }
-    <br />
-    total = total + item.UnitPrice;
-}
-@total
+</table>
+@totalAll
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
