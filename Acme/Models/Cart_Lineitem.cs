@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Data.SqlClient;
-using System.Data;
-using Acme.Models.ViewModels;
 
-
-namespace Acme.Controllers
+namespace Acme.Models
 {
     public class Cart_Lineitem
     {
@@ -35,7 +33,7 @@ namespace Acme.Controllers
         {
             SqlCommand cmd = new SqlCommand();
 
-            if(CUDAction == "update")
+            if (CUDAction == "update")
             {
                 cmd.CommandText = "update Cart_LineItems set CartNumber = @CartNumber, " +
                     "ProductId = @ProductId, " +
@@ -45,7 +43,7 @@ namespace Acme.Controllers
                 cmd.Parameters.AddWithValue("@ProductId", SqlDbType.VarChar).Value = cart.ProductId;
                 cmd.Parameters.AddWithValue("@Quantity", SqlDbType.Int).Value = cart.Quantity;
             }
-            else if(CUDAction == "delete")
+            else if (CUDAction == "delete")
             {
                 cmd.CommandText = "delete Cart_LineItems where ProductId = @ProductId";
                 cmd.Parameters.AddWithValue("@ProductId", SqlDbType.Int).Value = cart.ProductId;
@@ -53,32 +51,7 @@ namespace Acme.Controllers
             cmd.Connection = dbcon;
             int intCnt = cmd.ExecuteNonQuery();
             cmd.Dispose();
-            return intCnt;            
+            return intCnt;
         }
-
-        //public static Int32 CUDCart_Lineitem(SqlConnection dbcon, string CUDAction, Cart_Lineitem cart)
-        //{
-        //    SqlCommand cmd = new SqlCommand();
-        //    cmd.CommandType = CommandType.StoredProcedure;
-
-        //    if(CUDAction == "update")
-        //    {
-        //        cmd.CommandText = "update Cart_LineItems set CartNumber = @CartNumber" +
-        //            "ProductID = @ProductID" +
-        //            "Quantity = @Quantity";
-        //        cmd.Parameters.AddWithValue("@cartid", SqlDbType.Int).Value = cart.CartNumber;
-        //        cmd.Parameters.AddWithValue("@prodid", SqlDbType.VarChar).Value = cart.ProductId;
-        //        cmd.Parameters.AddWithValue("@qty", SqlDbType.Int).Value = cart.Quantity;
-        //    }
-        //    else if (CUDAction == "delete")
-        //    {
-        //        cmd.CommandText = "delete Cart_LineItems where CartNumber = @CartNumber";
-        //        cmd.Parameters.AddWithValue("@cartid", SqlDbType.Int).Value = cart.CartNumber;
-        //    }
-        //    cmd.Connection = dbcon;
-        //    int intCnt = cmd.ExecuteNonQuery();
-        //    cmd.Dispose();
-        //    return intCnt;
-        //}
     }
 }

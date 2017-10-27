@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<Acme.Models.ViewModels.Cartvm1>
 @{
-    ViewBag.Title = "Cart";
+    ViewBag.Title = "Cart"; 
 }
-<style>
+<style type="text/css">
     .button {
         background: none !important;
         border: none;
@@ -25,6 +25,23 @@
     table tr {
         border: 1px solid black;
     }
+    .validation-summary-valid {
+        display: none;
+    }
+
+    .field-validation-error {
+        color: #f00;
+    }
+
+    .validation-summary-errors {
+        color: #f00;
+        font-weight: bold;
+    }
+
+    .input-validation-error {
+        border: 2px solid #f00;
+        background-color: #fee;
+    }
 </style>
 
 <table>
@@ -45,9 +62,10 @@
         using (Html.BeginForm())
         {
             <tr>
+                <td>
                 <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
                 <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
-                <td><img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" width="85" height="100" /></td>
+                <img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" width="85" height="100" /></td>
                 <td>@Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID })</td>
                 <td style="text-align: center;">@Html.DisplayFor(modelItem => item.UnitPrice)</td>
                 <td>
@@ -69,11 +87,13 @@
                     <input type="submit" class="button" name="udaction" value="Delete" onclick="return confirm('Are you sure?')" />
                 </td>                
                 @{totalAll = totalAll + item.UnitPrice * item.Quantity;}
+                @{item.TotalCost = item.TotalCost + item.UnitPrice * item.Quantity; }
             </tr>
         }
     }
 </table>
-@totalAll
+Total Amount = @totalAll
+
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
