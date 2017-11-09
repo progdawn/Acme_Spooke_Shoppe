@@ -64,7 +64,10 @@ namespace Acme.Controllers
                 try
                 {
                     dbcon.Open();
-                    cart.CartNumber = 100;
+                    //cart.CartNumber = 100;
+                    if (Session["cartnumber"] == null)
+                        Session["cartnumber"] = Utility.GetIdNumber(dbcon, "CartNumber");
+                    int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
                     int intresult = Cart_Lineitem.CartUpSert(dbcon, cart);
                     dbcon.Close();
                     return RedirectToAction("Cart");
@@ -77,16 +80,22 @@ namespace Acme.Controllers
 
         public ActionResult Cart()
         {
-            List<Cartvm1> cartvm1List;
+            //List<Cartvm1> cartvm1List;
+            List<Cartvm1> cartlist = new List<Cartvm1>();
             try
             {
-                dbcon.Open();
-                cartvm1List = Cartvm1.GetCartList(dbcon, 100);
-                dbcon.Close();
-
+                if(Session["cartnumber"] != null)
+                {
+                    dbcon.Open();
+                    int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
+                    //cartvm1List = Cartvm1.GetCartList(dbcon, 100);
+                    cartlist = Cartvm1.GetCartList(dbcon, cartnumber);
+                    dbcon.Close();
+                }
+                return View(cartlist);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
-            return View(cartvm1List);
+            //return View(cartvm1List);
         }
 
         [HttpPost]

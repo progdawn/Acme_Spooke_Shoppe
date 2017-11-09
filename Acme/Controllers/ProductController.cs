@@ -32,11 +32,7 @@ namespace Acme.Controllers
             Product prod = new Product();
             return View(prod);
         }
-        public ActionResult Create2()
-        {
-            Product prod = new Product();
-            return View(prod);
-        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Product prod, HttpPostedFileBase uploadfile)
