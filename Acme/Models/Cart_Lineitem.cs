@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace Acme.Models
 {
@@ -35,9 +32,7 @@ namespace Acme.Models
 
             if (CUDAction == "update")
             {
-                cmd.CommandText = "update Cart_LineItems set CartNumber = @CartNumber, " +
-                    "ProductId = @ProductId, " +
-                    "Quantity = @Quantity " +
+                cmd.CommandText = "update Cart_LineItems set Quantity = @Quantity " +
                     "where ProductId = @ProductId";
                 cmd.Parameters.AddWithValue("@CartNumber", SqlDbType.Int).Value = cart.CartNumber;
                 cmd.Parameters.AddWithValue("@ProductId", SqlDbType.VarChar).Value = cart.ProductId;

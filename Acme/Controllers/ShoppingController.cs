@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Text.RegularExpressions;
 using System.Data.SqlClient;
@@ -64,7 +62,6 @@ namespace Acme.Controllers
                 try
                 {
                     dbcon.Open();
-                    //cart.CartNumber = 100;
                     if (Session["cartnumber"] == null)
                         Session["cartnumber"] = Utility.GetIdNumber(dbcon, "CartNumber");
                     int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
@@ -81,7 +78,6 @@ namespace Acme.Controllers
 
         public ActionResult Cart()
         {
-            //List<Cartvm1> cartvm1List;
             List<Cartvm1> cartlist = new List<Cartvm1>();
             try
             {
@@ -95,7 +91,6 @@ namespace Acme.Controllers
                 return View(cartlist);
             }
             catch (Exception ex) { throw new Exception(ex.Message); }
-            //return View(cartvm1List);
         }
 
         [HttpPost]
@@ -106,12 +101,14 @@ namespace Acme.Controllers
             {
                 try
                 {
-                    dbcon.Open();
-                    //cart.CartNumber = 100;
-                    int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
-                    cart.CartNumber = cartnumber;
-                    int intresult = Cart_Lineitem.CUDCart_Lineitem(dbcon, udaction, cart);
-                    dbcon.Close();
+                    if(Session["cartnumber"] != null)
+                    {
+                        dbcon.Open();
+                        int cartnumber = (int)Session["cartnumber"];
+                        cart.CartNumber = cartnumber;
+                        int intresult = Cart_Lineitem.CUDCart_Lineitem(dbcon, udaction, cart);
+                        dbcon.Close();
+                    }                    
                     return RedirectToAction("Cart");
                 }
                 catch(Exception ex) { throw new Exception(ex.Message); }

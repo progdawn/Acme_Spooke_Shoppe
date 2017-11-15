@@ -1,12 +1,8 @@
 ﻿using Acme.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace Acme.Controllers
 {
@@ -19,7 +15,6 @@ namespace Acme.Controllers
         public ActionResult Update()
         {
             dbcon.Open();
-            //int custid = 136;
             if (Session["custid"] == null) return RedirectToAction("Index", "home");
             int custid = Convert.ToInt32(Session["custid"].ToString());
             ViewBag.Statelist = Utility.GetStatesDropDown(dbcon);

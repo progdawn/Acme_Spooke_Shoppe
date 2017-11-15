@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Acme.Models.ViewModels.Cartvm1>
 @{
     ViewBag.Title = "Cart";
+    decimal totalamt = 0;
 }
 <style type="text/css">
     .button {
@@ -52,67 +53,78 @@ else
 {
     <table>
         <tr>
-            <th style="width:85px;"></th>
-            <th style="width:280px; text-align: left;">Product</th>
-            <th style="width:95px; text-align: left;">Unit Price</th>
-            <th style="width:85px; text-align: right;">Quantity</th>
-            <th style="width:85px; text-align: right;">Total</th>
-            <th style="width:70px;"></th>
+            <td style="width:85px"></td>
+            <td style="width:280px">Product</td>
+            <td style="width:95px;text-align:right;">Unit Price</td>
+            <td style="width:220px;">Quantity Total</td>
         </tr>
-
-        @{decimal totalAll = 0; }
-        @{decimal totalItem = 0; }
 
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    <input type="hidden" id="CartNumber" name="CartNumber" value="0" />
-                    <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
-                    <img src="~/Content/Images/Products/@Url.Content(item.Imagefile)" width="85" height="100" />
+                    <img src="~/Content/Images/Products/@item.Imagefile" style="width:85px;height:100px" />
+                    <br />
                 </td>
-                <td style="vertical-align:top">
+                <td style="vertical-align:top;">
                     @Html.ActionLink(@item.Name, "Order", new { id = @item.ProductID })<br />
                     @item.ShortDescription
                 </td>
-                <td style="text-align: center;">@Html.DisplayFor(modelItem => item.UnitPrice)</td>
-                <td style="vertical-align: top; text-align:right;">
+                <td style="vertical-align:top;text-align:right;">
+                    @string.Format("{0:C}", @item.UnitPrice)
+                </td>
+                <td style="vertical-align:top;">
                     <form action="/shopping/cart" method="post">
-                        <div style="width:100%">
-                            <div style="width:40%; float: left">
-                                <input type="hidden" id="ProductId" name="ProductId" value="@item.ProductID" />
+                        <div style="width:100%;">
+                            <div style="width:40%;float:left;">
+                                <input type="hidden" id="ProductId"
+                                       name="ProductId" value="@item.ProductID" />
                                 <div class="editor-field">
-                                    <input data-val="true" 
-                                            data-val-range="Quantity invalid" 
-                                            data-val-range-max="99"
-                                            data-val-range-min="1"
-                                            data-val-required="Quantity missing"
-                                            maxlength="2" size="2"
-                                            id="Quantity" name="Quantity" type="text" value="@item.Quantity" />
+                                    <input data-val="true"
+                                           data-val-range="Quantity invalid"
+                                           data-val-range-max="99" data-val-range-min="1"
+                                           data-val-required="Quantity missing"
+                                           maxlength="2" size="2"
+                                           id="Quantity" name="Quantity" type="text" value="@item.Quantity" />
                                     <br />
                                     <span class="field-validation-valid"
-                                            data-valmsg-for="Quantity"
-                                            data-valmsg-replace="true"></span>
+                                          data-valmsg-for="Quantity"
+                                          data-valmsg-replace="true"></span>
                                 </div>
                                 <br />
-                                <input type="submit" class="button" name="udaction" value="Update" />
+                                <input type="submit" class="button"
+                                       name="udaction" value="Update" />
                             </div>
-                            <div style="width:25%;float:left;text-align:right">
-                                @{totalItem = item.UnitPrice * item.Quantity;}
-                                @totalItem
+                            <div style="width:25%;float:left;text-align:right;">
+                                @{totalamt = totalamt + @item.TotalCost;}
+                                @string.Format("{0:C}", @item.TotalCost)
                             </div>
                             <div style="width:35%;float:left;text-align:center;">
-                                <input type="submit" class="button" name="udaction" value="Delete" onclick="return confirm('Are you sure?')" />
+                                <input type="submit" class="button"
+                                       name="udaction" value="Delete" onclick="return confirm('Are you sure?')" />
                             </div>
                         </div>
                     </form>
-                </td>              
-                @{totalAll = totalAll + item.UnitPrice * item.Quantity;}
-                @{item.TotalCost = item.TotalCost + item.UnitPrice * item.Quantity; }
+                </td>
             </tr>
-        }
+        } 
+        <tr>
+            <td colspan="3" style="text-align:right;">
+                                            
+            </td>
+            <td>
+                <div style="width:100%;">
+                    <div style="width:30%;float:left;text-align:right;">
+                        Total
+                    </div>
+                    <div style="width:35%;float:left;text-align:right;">
+                        @string.Format("{0:C}", @totalamt)
+                    </div>
+                    <div style="width:35%;float:left;text-align:center;"></div>
+                </div>
+            </td>
+        </tr>
     </table>
-    <p>Total Amount = @totalAll</p>
 }
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
