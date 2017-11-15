@@ -20,6 +20,7 @@ namespace Acme.Controllers
         {
             dbcon.Open();
             //int custid = 136;
+            if (Session["custid"] == null) return RedirectToAction("Index", "home");
             int custid = Convert.ToInt32(Session["custid"].ToString());
             ViewBag.Statelist = Utility.GetStatesDropDown(dbcon);
             Customer cust = Customer.GetCustomerSingle(dbcon, custid, "");

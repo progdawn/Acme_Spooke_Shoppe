@@ -68,6 +68,7 @@ namespace Acme.Controllers
                     if (Session["cartnumber"] == null)
                         Session["cartnumber"] = Utility.GetIdNumber(dbcon, "CartNumber");
                     int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
+                    cart.CartNumber = cartnumber;
                     int intresult = Cart_Lineitem.CartUpSert(dbcon, cart);
                     dbcon.Close();
                     return RedirectToAction("Cart");
@@ -84,11 +85,10 @@ namespace Acme.Controllers
             List<Cartvm1> cartlist = new List<Cartvm1>();
             try
             {
-                if(Session["cartnumber"] != null)
+                if (Session["cartnumber"] != null)
                 {
                     dbcon.Open();
-                    int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
-                    //cartvm1List = Cartvm1.GetCartList(dbcon, 100);
+                    int cartnumber = (int)Session["cartnumber"];
                     cartlist = Cartvm1.GetCartList(dbcon, cartnumber);
                     dbcon.Close();
                 }
@@ -107,7 +107,9 @@ namespace Acme.Controllers
                 try
                 {
                     dbcon.Open();
-                    cart.CartNumber = 100;
+                    //cart.CartNumber = 100;
+                    int cartnumber = Convert.ToInt32(Session["cartnumber"].ToString());
+                    cart.CartNumber = cartnumber;
                     int intresult = Cart_Lineitem.CUDCart_Lineitem(dbcon, udaction, cart);
                     dbcon.Close();
                     return RedirectToAction("Cart");

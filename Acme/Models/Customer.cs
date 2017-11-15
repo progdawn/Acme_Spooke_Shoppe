@@ -21,8 +21,8 @@ namespace Acme.Models
         public string ZipCode { get; set; }
         public string PhoneNumber { get; set; }
         public string PWD { get; set; }
-        public static Customer GetCustomerSingle(SqlConnection dbcon, int custid,
-        string email)
+
+        public static Customer GetCustomerSingle(SqlConnection dbcon, int custid, string email)
         {
             Customer obj = new Customer();
             SqlCommand cmd;
