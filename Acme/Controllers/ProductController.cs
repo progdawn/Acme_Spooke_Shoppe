@@ -30,6 +30,7 @@ namespace Acme.Controllers
         public ActionResult Create()
         {
             Product prod = new Product();
+            prod.ImageFile = "nopic.jpg";
             return View(prod);
         }
 
